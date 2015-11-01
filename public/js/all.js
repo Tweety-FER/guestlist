@@ -26750,9 +26750,10 @@ angular.module('ngResource', ['ng']).
           admin = fromStorage('kset-admin') || false;
 
       var auth = {
-        getToken : function() { return token; },
+        getToken : function() {
+          return token;
+        },
         amAdmin : function() {
-          console.log(admin);
           return admin;
         },
         login : login,
