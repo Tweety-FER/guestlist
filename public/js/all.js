@@ -27029,7 +27029,7 @@ angular.module('ngResource', ['ng']).
         if(self.guest.fullName.indexOf(',') !== -1) {
           res.massSave({
             fullNames : self.guest.fullName,
-            referrer : self.guest.referrer || ''
+            referrer : self.guest.referrer
           }, afterSave, failedSave);
         } else {
           res.save(self.guest, afterSave, failedSave);
