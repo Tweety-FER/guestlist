@@ -5760,4 +5760,9 @@ button.close {
     table-layout: fixed;
     float: none; } }
 
+@media (min-width: 0px) {
+  .nav-justified > li, .nav-tabs.nav-justified > li {
+    display: table-cell;
+    width: 1%; } }
+
 /*# sourceMappingURL=app.css.map */
