@@ -26,11 +26,11 @@
 }
 
 body {
-  padding-bottom: 40px;
+  padding-bottom: 40px !important;
 }
 
 @media screen and (max-width: 768px) {
     body {
-      padding-bottom: 0px;
+      padding-bottom: 0px !important;
     }
 }
