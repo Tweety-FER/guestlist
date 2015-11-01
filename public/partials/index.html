@@ -69,19 +69,20 @@
       </div>
       <button class="btn btn-default" ng-click="index.add()">Dodaj</button>
     </form>
+    {{index.admin}}
   </div>
 </div>
 <nav class="navbar navbar-fixed-bottom navbar-inverse">
   <div class="container">
     <ul class="nav navbar-nav nav-pills">
-      <li ng-show="!!index.admin"
+      <li ng-show="index.admin"
           ng-class="{'active' : index.active === 'list'}"
           ng-click="index.activate('list')">
           <a>
             <i class="glyphicon glyphicon-list"></i>
           </a>
       </li>
-      <li ng-show="!!index.admin"
+      <li ng-show="index.admin"
           ng-class="{'active' : index.active === 'form'}"
           ng-click="index.activate('form')">
           <a>
