@@ -5,16 +5,16 @@
 
   <form>
     <div class="form-group">
-      <label>E-Mail</label>
-      <input type="text" class="form-control" ng-model="auth.loginData.email" />
+      <label for="lemail">E-Mail</label>
+      <input type="text" id="lemail" class="form-control" ng-model="auth.loginData.email" />
     </div>
 
     <div class="form-group">
-      <label>Password</label>
-      <input type="password" class="form-control" ng-model="auth.loginData.password" />
+      <label for="lpassword">Password</label>
+      <input id="lpassword" type="password" class="form-control" ng-model="auth.loginData.password" />
     </div>
 
-    <button type="button" class="btn btn-default" ng-click="auth.login()">
+    <button type="button" type="submit" class="btn btn-default" ng-click="auth.login()">
       Login!
     </button>
   </form>
@@ -23,26 +23,26 @@
 
   <form>
     <div class="form-group">
-      <label>Ime</label>
-      <input type="text" class="form-control" ng-model="auth.registerData.name" />
+      <label for="rname">Ime</label>
+      <input id="rname" type="text" class="form-control" ng-model="auth.registerData.name" />
     </div>
 
     <div class="form-group">
-      <label>E-Mail</label>
-      <input type="text" class="form-control" ng-model="auth.registerData.email" />
+      <label for="remail">E-Mail</label>
+      <input id="remail" type="text" class="form-control" ng-model="auth.registerData.email" />
     </div>
 
     <div class="form-group">
-      <label>Password</label>
-      <input type="password" class="form-control" ng-model="auth.registerData.password" />
+      <label for="rpassword">Password</label>
+      <input id="rpassword" type="password" class="form-control" ng-model="auth.registerData.password" />
     </div>
 
     <div class="form-group">
-      <label>Opet Password</label>
-      <input type="password" class="form-control" ng-model="auth.registerData.passwordConfirmation" />
+      <label for="rpassword2">Opet Password</label>
+      <input id="rpassword2" type="password" class="form-control" ng-model="auth.registerData.passwordConfirmation" />
     </div>
 
-    <button type="button" class="btn btn-default" ng-click="auth.register()">
+    <button type="button" type="submit" class="btn btn-default" ng-click="auth.register()">
       Registriraj Se!
     </button>
   </form>

@@ -18,16 +18,16 @@
     <div class="well">
       <form class="form-inline">
         <div class="form-group">
-          <label>Ime</label>
-          <input type="text" class="form-control" ng-model="index.query.fullName" />
+          <label for="name">Ime</label>
+          <input id="name" type="text" class="form-control" ng-model="index.query.fullName" />
         </div>
         <div class="form-group">
-          <label>Ciji?</label>
-          <input type="text" class="form-control" ng-model="index.query.referrer" />
+          <label for="referrer">Ciji?</label>
+          <input id="referrer" type="text" class="form-control" ng-model="index.query.referrer" />
         </div>
         <div class="checkbox">
-          <label>Potvrdeni/Nepotvrdeni?</label>
-          <input type="checkbox" ng-click="index.toggleFilter()" />
+          <label for="inside">Usli?</label>
+          <input id="inside" type="checkbox" ng-click="index.toggleFilter()" />
         </div>
       </form>
     </div>
