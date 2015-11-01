@@ -5772,6 +5772,9 @@ button.close {
   text-align: center; }
 
 .spaced {
-  padding-bottom: 2em !important; }
+  padding-bottom: 3em !important; }
+
+body {
+  padding-bottom: 40px; }
 
 /*# sourceMappingURL=app.css.map */
