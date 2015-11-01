@@ -157,6 +157,9 @@
     });
 
     self.admin = auth.amAdmin();
+
+    console.log('Loaded admin status', self.admin);
+
     self.guest = {};
     self.guests = [];
     // DO NOT show checked people by default
