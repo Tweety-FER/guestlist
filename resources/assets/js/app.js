@@ -17,7 +17,10 @@
 
       var auth = {
         getToken : function() { return token; },
-        amAdmin : function() { return admin; },
+        amAdmin : function() {
+          console.log(admin);
+          return admin;
+        },
         login : login,
         logout : logout,
         register : register,
