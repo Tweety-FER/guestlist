@@ -5771,11 +5771,7 @@ button.close {
   width: 1%;
   text-align: center; }
 
-body {
-  padding-bottom: 40px !important; }
-
-@media screen and (max-width: 768px) {
-  body {
-    padding-bottom: 0px !important; } }
+.spaced {
+  margin-bottom: 1em !important; }
 
 /*# sourceMappingURL=app.css.map */
