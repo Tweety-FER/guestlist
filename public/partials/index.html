@@ -1,0 +1,87 @@
+<ul class="nav nav-tabs nav-justified" ng-if="!!index.admin">
+    <!-- Context-Switching Buttons -->
+    <li class="presentation"
+        ng-class="{'active' : index.active === 'list'}"
+        ng-click="index.activate('list')">
+      <a>Popis</a>
+    </li>
+    <li class="presentation"
+        ng-class="{'active' : index.active === 'form'}"
+        ng-click="index.activate('form')">
+      <a>Dodavanje</a>
+    </li>
+</ul>
+
+<div class="container">
+  <div class="list" ng-if="index.active === 'list'">
+    <!-- Search Bars [Name, Referrer] -->
+    <div class="well">
+      <form class="form-inline">
+        <div class="form-group">
+          <label>Ime</label>
+          <input type="text" class="form-control" ng-model="index.query.fullName" />
+        </div>
+        <div class="form-group">
+          <label>Ciji?</label>
+          <input type="text" class="form-control" ng-model="index.query.referrer" />
+        </div>
+        <div class="checkbox">
+          <label>Potvrdeni/Nepotvrdeni?</label>
+          <input type="checkbox" ng-click="index.toggleFilter()" />
+        </div>
+      </form>
+    </div>
+
+    <hr/>
+
+    <!-- List of users -->
+    <table class="table table-striped">
+      <tr>
+        <th>
+          Ime
+        </th>
+        <th>
+          Ciji Je
+        </th>
+        <th>
+          Potvrdi
+        </th>
+        <th ng-if="index.admin">
+          Obrisi
+        </th>
+      </tr>
+      <tr ng-repeat="guest in index.guests | filter:index.query | orderBy:'fullName'">
+        <td>
+          {{guest.fullName}}
+        </td>
+        <td>
+          {{guest.referrer}}
+        </td>
+        <td ng-click="index.toggleCheck(guest)">
+          <i class="glyphicon" ng-class="index.query.checked === '0' ? 'glyphicon-plus' : 'glyphicon-minus'"></i>
+        </td>
+        <td ng-if="index.admin" ng-click="index.delete(guest.id)">
+          <i class="glyphicon glyphicon-remove"></i>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="form" ng-if="index.active === 'form'">
+    <form>
+      <div class="alert alert-danger" ng-if="!!index.error">
+        {{index.error}}
+      </div>
+
+      <div class="form-group">
+        <label>Ime</label>
+        <input type="text" class="form-control" ng-model="index.guest.fullName" />
+      </div>
+      <div class="form-group">
+        <label>Ciji Je?</label>
+        <input type="text" class="form-control" ng-model="index.guest.referrer" />
+      </div>
+      <button class="btn btn-default" ng-click="index.add()">Dodaj</button>
+    </form>
+  </div>
+</div>

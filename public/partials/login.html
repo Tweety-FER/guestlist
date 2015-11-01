@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="alert alert-danger" ng-if="!!auth.error">
+    {{auth.error}}
+  </div>
+
+  <form>
+    <div class="form-group">
+      <label>E-Mail</label>
+      <input type="text" class="form-control" ng-model="auth.loginData.email" />
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" class="form-control" ng-model="auth.loginData.password" />
+    </div>
+
+    <button type="button" class="btn btn-default" ng-click="auth.login()">
+      Login!
+    </button>
+  </form>
+
+  <hr/>
+
+  <form>
+    <div class="form-group">
+      <label>Ime</label>
+      <input type="text" class="form-control" ng-model="auth.registerData.name" />
+    </div>
+
+    <div class="form-group">
+      <label>E-Mail</label>
+      <input type="text" class="form-control" ng-model="auth.registerData.email" />
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" class="form-control" ng-model="auth.registerData.password" />
+    </div>
+
+    <div class="form-group">
+      <label>Opet Password</label>
+      <input type="password" class="form-control" ng-model="auth.registerData.passwordConfirmation" />
+    </div>
+
+    <button type="button" class="btn btn-default" ng-click="auth.register()">
+      Registriraj Se!
+    </button>
+  </form>
+</div>
