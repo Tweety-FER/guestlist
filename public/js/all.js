@@ -26754,6 +26754,10 @@ angular.module('ngResource', ['ng']).
           return token;
         },
         amAdmin : function() {
+          if(angular.isString(admin)) {
+            return admin === 'true';
+          }
+          
           return admin;
         },
         login : login,
@@ -26890,7 +26894,7 @@ angular.module('ngResource', ['ng']).
       }
     });
 
-    self.admin = auth.amAdmin() === true || auth.amAdmin() === 'true';
+    self.admin = auth.amAdmin();
 
     self.guest = {};
     self.guests = [];
