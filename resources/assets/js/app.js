@@ -156,9 +156,7 @@
       }
     });
 
-    self.admin = auth.amAdmin();
-
-    console.log('Loaded admin status', self.admin);
+    self.admin = auth.amAdmin() === true || auth.amAdmin() === 'true';
 
     self.guest = {};
     self.guests = [];

@@ -1,99 +1,98 @@
-<div class="container">
-  <div class="list" ng-if="index.active === 'list'">
-    <!-- Search Bars [Name, Referrer] -->
-    <div class="well">
-      <form class="form-inline">
-        <div class="form-group">
-          <input id="name" type="text" class="form-control input-sm" placeholder="Ime" ng-model="index.query.fullName" />
-        </div>
-        <div class="form-group">
-          <input id="referrer" type="text" class="form-control input-sm" placeholder="Ciji je?" ng-model="index.query.referrer" />
-        </div>
-        <div class="checkbox">
-          <label>
-            <input id="inside" type="checkbox" ng-click="index.toggleFilter()" />
-            Usli?
-          </label>
-        </div>
-      </form>
+<div>
+  <div class="container">
+    <div class="list" ng-if="index.active === 'list'">
+      <!-- Search Bars [Name, Referrer] -->
+      <div class="well">
+        <form class="form-inline">
+          <div class="form-group">
+            <input id="name" type="text" class="form-control input-sm" placeholder="Ime" ng-model="index.query.fullName" />
+          </div>
+          <div class="form-group">
+            <input id="referrer" type="text" class="form-control input-sm" placeholder="Ciji je?" ng-model="index.query.referrer" />
+          </div>
+          <div class="checkbox">
+            <label>
+              <input id="inside" type="checkbox" ng-click="index.toggleFilter()" />
+              Usli?
+            </label>
+          </div>
+        </form>
+      </div>
+
+      <hr/>
+
+      <!-- List of users -->
+      <table class="table table-striped spaced">
+        <tr>
+          <th>
+            Ime
+          </th>
+          <th>
+            Ciji Je
+          </th>
+          <th>
+            {{ index.query.checked === '0' ? 'Potvrdi' : 'Ponisti' }}
+          </th>
+          <th ng-if="index.admin">
+            Obrisi
+          </th>
+        </tr>
+        <tr ng-repeat="guest in index.guests | filter:index.query | orderBy:'fullName'">
+          <td>
+            {{guest.fullName}}
+          </td>
+          <td>
+            {{guest.referrer}}
+          </td>
+          <td ng-click="index.toggleCheck(guest)">
+            <i class="glyphicon" ng-class="index.query.checked === '0' ? 'glyphicon-plus' : 'glyphicon-minus'"></i>
+          </td>
+          <td ng-if="index.admin" ng-click="index.delete(guest.id)">
+            <i class="glyphicon glyphicon-remove"></i>
+          </td>
+        </tr>
+      </table>
     </div>
 
-    <hr/>
+    <div class="form" ng-if="index.active === 'form'">
+      <form>
+        <div class="alert alert-danger" ng-if="!!index.error">
+          {{index.error}}
+        </div>
 
-    <!-- List of users -->
-    <table class="table table-striped spaced">
-      <tr>
-        <th>
-          Ime
-        </th>
-        <th>
-          Ciji Je
-        </th>
-        <th>
-          {{ index.query.checked === '0' ? 'Potvrdi' : 'Ponisti' }}
-        </th>
-        <th ng-if="index.admin">
-          Obrisi
-        </th>
-      </tr>
-      <tr ng-repeat="guest in index.guests | filter:index.query | orderBy:'fullName'">
-        <td>
-          {{guest.fullName}}
-        </td>
-        <td>
-          {{guest.referrer}}
-        </td>
-        <td ng-click="index.toggleCheck(guest)">
-          <i class="glyphicon" ng-class="index.query.checked === '0' ? 'glyphicon-plus' : 'glyphicon-minus'"></i>
-        </td>
-        <td ng-if="index.admin" ng-click="index.delete(guest.id)">
-          <i class="glyphicon glyphicon-remove"></i>
-        </td>
-      </tr>
-    </table>
+        <div class="form-group">
+          <label>Ime</label>
+          <input type="text" class="form-control" ng-model="index.guest.fullName" />
+        </div>
+        <div class="form-group">
+          <label>Ciji Je?</label>
+          <input type="text" class="form-control" ng-model="index.guest.referrer" />
+        </div>
+        <button class="btn btn-default" ng-click="index.add()">Dodaj</button>
+      </form>
+    </div>
   </div>
-
-  <div class="form" ng-if="index.active === 'form'">
-    <form>
-      <div class="alert alert-danger" ng-if="!!index.error">
-        {{index.error}}
-      </div>
-
-      <div class="form-group">
-        <label>Ime</label>
-        <input type="text" class="form-control" ng-model="index.guest.fullName" />
-      </div>
-      <div class="form-group">
-        <label>Ciji Je?</label>
-        <input type="text" class="form-control" ng-model="index.guest.referrer" />
-      </div>
-      <button class="btn btn-default" ng-click="index.add()">Dodaj</button>
-    </form>
-    {{index.admin}}
-  </div>
+  <nav class="navbar navbar-fixed-bottom navbar-inverse">
+    <div class="container">
+      <ul class="nav navbar-nav nav-pills">
+        <li ng-if="!!index.admin" ng-class="{'active' : index.active === 'list'}"
+            ng-click="index.activate('list')">
+            <a>
+              <i class="glyphicon glyphicon-list"></i>
+            </a>
+        </li>
+        <li ng-if="!!index.admin" ng-class="{'active' : index.active === 'form'}"
+            ng-click="index.activate('form')">
+            <a>
+              <i class="glyphicon glyphicon-pencil"></i>
+            </a>
+        </li>
+        <li ng-click="index.logout()">
+          <a>
+            <i class="glyphicon glyphicon-off"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 </div>
-<nav class="navbar navbar-fixed-bottom navbar-inverse">
-  <div class="container">
-    <ul class="nav navbar-nav nav-pills">
-      <li ng-show="index.admin"
-          ng-class="{'active' : index.active === 'list'}"
-          ng-click="index.activate('list')">
-          <a>
-            <i class="glyphicon glyphicon-list"></i>
-          </a>
-      </li>
-      <li ng-show="index.admin"
-          ng-class="{'active' : index.active === 'form'}"
-          ng-click="index.activate('form')">
-          <a>
-            <i class="glyphicon glyphicon-pencil"></i>
-          </a>
-      </li>
-      <li ng-click="index.logout()">
-        <a>
-          <i class="glyphicon glyphicon-off"></i>
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
