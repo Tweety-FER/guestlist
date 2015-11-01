@@ -31,6 +31,7 @@
 
 body {
   padding-bottom: 40px;
+  padding-top: 1.5em;
 }
 
 .nope {
@@ -42,7 +43,7 @@ body {
    color:red;
 }
 
-.input-group.required .control-label:after { 
+.input-group.required .control-label:after {
    content:"*";
    color:red;
 }
