@@ -27002,7 +27002,6 @@ angular.module('ngResource', ['ng']).
 
   function FormCtrl($resource, $auth, $http) {
     var self = this;
-    console.log('Forming!');
 
     $http.defaults.headers.common['token'] = $auth.getToken();
 
