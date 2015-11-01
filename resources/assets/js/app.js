@@ -230,7 +230,7 @@
     }
 
     function toggleCheck(guest, noUndo) {
-      guest.checked = guest.checked === '0' ? true : false;
+      guest.checked = (guest.checked === '0' || guest.checked === false) ? true : false;
       res.update(guest, function() {
         if(noUndo !== true) {
           //Add undo function
