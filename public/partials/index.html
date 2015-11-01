@@ -62,12 +62,12 @@
           {{index.error}}
         </div>
 
-        <div class="form-group">
-          <label>Ime</label>
-          <input type="text" class="form-control" ng-model="index.guest.fullName" />
+        <div class="form-group required">
+          <label class="control-label">Ime</label>
+          <input type="text" class="form-control" ng-model="index.guest.fullName" required/>
         </div>
         <div class="form-group">
-          <label>Ciji Je?</label>
+          <label class="control-label">Ciji Je?</label>
           <input type="text" class="form-control" ng-model="index.guest.referrer" />
         </div>
         <button class="btn btn-block btn-default" type="submit" ng-click="index.add()">Dodaj</button>

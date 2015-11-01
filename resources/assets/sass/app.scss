@@ -36,3 +36,13 @@ body {
 .nope {
   display: none !important;
 }
+
+.form-group.required .control-label:after {
+   content:"*";
+   color:red;
+}
+
+.input-group.required .control-label:after { 
+   content:"*";
+   color:red;
+}
