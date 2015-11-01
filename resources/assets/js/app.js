@@ -23,7 +23,7 @@
           if(angular.isString(admin)) {
             return admin === 'true';
           }
-          
+
           return admin;
         },
         login : login,
@@ -234,16 +234,25 @@
     }
   }
 
-  AuthCtrl.$inject = ['auth', '$state'];
+  AuthCtrl.$inject = ['auth', '$state', '$scope'];
 
-  function AuthCtrl(auth, $state) {
+  function AuthCtrl(auth, $state, $scope) {
     var self = this;
 
+    self.showRegister = false;
     self.loginData = {};
     self.registerData = {};
     self.login = login;
     self.register = register;
     self.error = '';
+
+    if(!document.toggleRegister) {
+      document.toggleRegister = function() {
+        $scope.$apply(function() {
+          self.showRegister = !self.showRegister;
+        });
+      }
+    }
 
     function success() {
       $state.go('index');

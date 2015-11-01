@@ -19,9 +19,9 @@
     </button>
   </form>
 
-  <hr/>
+  <hr ng-if="auth.showRegister"/>
 
-  <form>
+  <form ng-if="auth.showRegister">
     <div class="form-group">
       <label for="rname">Ime</label>
       <input id="rname" type="text" class="form-control" ng-model="auth.registerData.name" />
