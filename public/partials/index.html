@@ -45,10 +45,10 @@
             {{guest.referrer}}
           </td>
           <td ng-click="index.toggleCheck(guest)">
-            <i class="glyphicon" ng-class="index.query.checked === '0' ? 'glyphicon-plus' : 'glyphicon-minus'"></i>
+            <i class="fa" ng-class="index.query.checked === '0' ? 'fa-plus' : 'fa-minus'"></i>
           </td>
           <td ng-if="index.admin" ng-click="index.delete(guest.id)">
-            <i class="glyphicon glyphicon-remove"></i>
+            <i class="fa fa-remove"></i>
           </td>
         </tr>
       </table>
@@ -78,18 +78,23 @@
         <li ng-if="!!index.admin" ng-class="{'active' : index.active === 'list'}"
             ng-click="index.activate('list')">
             <a>
-              <i class="glyphicon glyphicon-list"></i>
+              <i class="fa fa-list"></i>
             </a>
         </li>
         <li ng-if="!!index.admin" ng-class="{'active' : index.active === 'form'}"
             ng-click="index.activate('form')">
             <a>
-              <i class="glyphicon glyphicon-pencil"></i>
+              <i class="fa fa-edit"></i>
             </a>
         </li>
         <li ng-click="index.logout()">
           <a>
-            <i class="glyphicon glyphicon-off"></i>
+            <i class="fa fa-power-off"></i>
+          </a>
+        </li>
+        <li ng-click="index.undo()" ng-if="index.undoStack.length > 0">
+          <a>
+            <i class="fa fa-undo"></i>
           </a>
         </li>
       </ul>

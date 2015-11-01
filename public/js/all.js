@@ -26907,6 +26907,8 @@ angular.module('ngResource', ['ng']).
     self.add = add;
     self.delete = remove;
     self.logout = logout;
+    self.undoStack = [];
+    self.undo = undo;
 
     var busy = false;
 
@@ -26916,6 +26918,13 @@ angular.module('ngResource', ['ng']).
       res.query(function(guests) {
         self.guests = guests;
       });
+    }
+
+    function undo() {
+      if(self.undoStack.length > 0) {
+        var f = self.undoStack.pop();
+        f();
+      }
     }
 
     function remove(id) {
@@ -26954,9 +26963,16 @@ angular.module('ngResource', ['ng']).
       self.query.checked = self.query.checked === '0' ? '1' : '0';
     }
 
-    function toggleCheck(guest) {
+    function toggleCheck(guest, noUndo) {
       guest.checked = guest.checked === '0' ? true : false;
       res.update(guest, function() {
+        if(noUndo !== true) {
+          //Add undo function
+          self.undoStack.push(function() {
+            toggleCheck(guest, true);
+          });
+        }
+
         load();
         self.query.fullName = '';
         self.query.referrer = '';
