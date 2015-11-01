@@ -5765,4 +5765,10 @@ button.close {
     display: table-cell;
     width: 1%; } }
 
+.nav-pills li {
+  float: none;
+  display: table-cell;
+  width: 1%;
+  text-align: center; }
+
 /*# sourceMappingURL=app.css.map */
