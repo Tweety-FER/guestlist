@@ -26735,123 +26735,24 @@ angular.module('ngResource', ['ng']).
 (function() {
   'use strict';
 
-  angular.module('kset.guestlist', ['ngResource', 'ui.router'])
-         .factory('auth', Auth)
-         .factory('check', Check)
+  angular.module('kset.guestlist', [
+            'ngResource',
+            'ui.router',
+            'kset.guestlist.auth.principal',
+            'kset.guestlist.navbar',
+            'kset.guestlist.list',
+            'kset.guestlist.form',
+            'kset.guestlist.auth'
+          ])
          .config(SetupRoutes)
-         .run(Authorize)
-         .controller('IndexController', IndexCtrl)
-         .controller('AuthController', AuthCtrl);
+         .run(Authorize);
 
-  Auth.$inject = ['$http'];
+  Authorize.$inject = ['$rootScope', '$auth'];
 
-  function Auth($http) {
-      var token = fromStorage('kset-token'),
-          admin = fromStorage('kset-admin') || false;
-
-      var auth = {
-        getToken : function() {
-          return token;
-        },
-        amAdmin : function() {
-          if(angular.isString(admin)) {
-            return admin === 'true';
-          }
-
-          return admin;
-        },
-        login : login,
-        logout : logout,
-        register : register,
-        isAuthorized : isAuthorized
-      };
-
-      return auth;
-
-      function toStorage(name, value) {
-        if(typeof Storage !== 'undefined') {
-          localStorage.setItem(name, value);
-        }
-      }
-
-      function fromStorage(name) {
-        if(typeof Storage !== 'undefined') {
-          return localStorage.getItem(name);
-        }
-      }
-
-      function purgeStorage() {
-        if(typeof Storage !== 'undefined') {
-          localStorage.removeItem('kset-token');
-          localStorage.removeItem('kset-admin');
-        }
-      }
-
-      function login(email, password) {
-        return $http.post('/api/login', {
-                      email : email,
-                      password : password
-                    }).then(function(res) {
-                      token = res.data.key;
-                      admin = res.data.admin;
-                      toStorage('kset-token', token);
-                      toStorage('kset-admin', admin);
-                      return true;
-                    },function() {
-                      token = undefined;
-                      admin = false;
-                      purgeStorage();
-                      return false;
-                    });
-      }
-
-      function register(name, email, password, passwordConfirmation) {
-        return $http.post('/api/register', {
-                      name : name,
-                      email : email,
-                      password : password,
-                      'password_confirmation' : passwordConfirmation
-                    }).then(function(res) {
-                      token = res.data.key;
-                      admin = res.data.admin;
-                      toStorage('kset-token', token);
-                      toStorage('kset-admin', admin);
-                      return true;
-                    },function() {
-                      token = undefined;
-                      admin = false;
-                      purgeStorage();
-                      return false;
-                    });
-      }
-
-      function logout() {
-        token = undefined;
-        purgeStorage();
-      }
-
-      function isAuthorized() {
-        return angular.isDefined(token);
-      }
-  }
-
-  Check.$inject = ['auth', '$state']
-
-  function Check(auth, $state) {
-    return function(e) {
-      if(!auth.isAuthorized()) {
-        e.preventDefault();
-        $state.go('auth');
-      }
-    }
-  }
-
-  Authorize.$inject = ['$rootScope', 'check'];
-
-  function Authorize($rootScope, check) {
+  function Authorize($rootScope, $auth) {
     $rootScope.$on('$stateChangeStart', function(e, toState) {
       if(toState.name !== 'auth') {
-        check(e);
+        $auth.guard(e);
       }
     });
   }
@@ -26863,10 +26764,21 @@ angular.module('ngResource', ['ng']).
 
     state
     .state('index', {
-      url : '/index',
       templateUrl : 'partials/index.html',
-      controller : 'IndexController',
-      controllerAs : 'index'
+      controller : 'NavbarController',
+      controllerAs : 'navbar'
+    })
+    .state('index.list', {
+      url : '/guestlist',
+      templateUrl : 'partials/list.html',
+      controller : 'ListController',
+      controllerAs : 'list'
+    })
+    .state('index.form', {
+      url : '/admin',
+      templateUrl : 'partials/form.html',
+      controller : 'FormController',
+      controllerAs : 'form'
     })
     .state('auth', {
       url : '/auth',
@@ -26992,56 +26904,373 @@ angular.module('ngResource', ['ng']).
       self.error = 'Unos nije uspio! Provjerite podatke!';
     }
   }
+}());
 
-  AuthCtrl.$inject = ['auth', '$state', '$scope'];
+(function() {
+  'use strict';
 
-  function AuthCtrl(auth, $state, $scope) {
+  angular.module('kset.guestlist.auth.principal', ['ui.router'])
+         .factory('$auth', Auth);
+
+   Auth.$inject = ['$http', '$state'];
+
+   function Auth($http, $state) {
+       var token = fromStorage('kset-token'),
+           admin = fromStorage('kset-admin') || false;
+
+       var auth = {
+         getToken : function() {
+           return token;
+         },
+         amAdmin : function() {
+           if(angular.isString(admin)) {
+             return admin === 'true';
+           }
+
+           return admin;
+         },
+         login : login,
+         logout : logout,
+         register : register,
+         isAuthorized : isAuthorized,
+         guard : guard
+       };
+
+       return auth;
+
+       function toStorage(name, value) {
+         if(typeof Storage !== 'undefined') {
+           localStorage.setItem(name, value);
+         }
+       }
+
+       function fromStorage(name) {
+         if(typeof Storage !== 'undefined') {
+           return localStorage.getItem(name);
+         }
+       }
+
+       function purgeStorage() {
+         if(typeof Storage !== 'undefined') {
+           localStorage.removeItem('kset-token');
+           localStorage.removeItem('kset-admin');
+         }
+       }
+
+       function guard(transEvent) {
+         if(!auth.isAuthorized()) {
+           transEvent.preventDefault();
+           $state.go('auth');
+         }
+       }
+
+       function login(email, password) {
+         return $http.post('/api/login', {
+                       email : email,
+                       password : password
+                     }).then(function(res) {
+                       token = res.data.key;
+                       admin = res.data.admin;
+                       toStorage('kset-token', token);
+                       toStorage('kset-admin', admin);
+                       return true;
+                     },function() {
+                       token = undefined;
+                       admin = false;
+                       purgeStorage();
+                       return false;
+                     });
+       }
+
+       function register(name, email, password, passwordConfirmation) {
+         return $http.post('/api/register', {
+                       name : name,
+                       email : email,
+                       password : password,
+                       'password_confirmation' : passwordConfirmation
+                     }).then(function(res) {
+                       token = res.data.key;
+                       admin = res.data.admin;
+                       toStorage('kset-token', token);
+                       toStorage('kset-admin', admin);
+                       return true;
+                     },function() {
+                       token = undefined;
+                       admin = false;
+                       purgeStorage();
+                       return false;
+                     });
+       }
+
+       function logout() {
+         token = undefined;
+         purgeStorage();
+       }
+
+       function isAuthorized() {
+         return angular.isDefined(token);
+       }
+   }
+
+}());
+
+(function() {
+  'use strict';
+  angular.module('kset.guestlist.history', [])
+         .factory('$history', History);
+
+  function History() {
+      var history = [];
+
+      var undoer = {
+        length : length,
+        push : push,
+        undo : undo
+      };
+
+      return undoer;
+
+      function length() {
+        return history.length;
+      }
+
+      function push(op) {
+        history.push(op);
+      }
+
+      function undo() {
+        if(history.length > 0) {
+          var op = history.pop();
+
+          op();
+        }
+      }
+  }
+
+}());
+
+(function() {
+  'use strict';
+
+  angular.module('kset.guestlist.auth', [])
+         .controller('AuthController', Auth);
+
+   Auth.$inject = ['$auth', '$state', '$scope'];
+
+   function Auth(auth, $state, $scope) {
+     var self = this;
+
+     self.showRegister = false;
+     self.loginData = {};
+     self.registerData = {};
+     self.login = login;
+     self.register = register;
+     self.error = '';
+
+     if(!document.toggleRegister) {
+       document.toggleRegister = function() {
+         $scope.$apply(function() {
+           self.showRegister = !self.showRegister;
+         });
+       }
+     }
+
+     function success() {
+       $state.go('index.list');
+     }
+
+     function failure() {
+       self.error = 'Autorizacija nije uspjela';
+     }
+
+     function login() {
+       auth.login(self.loginData.email, self.loginData.password).then(
+         function(status) {
+           status ? success() : failure();
+         }, failure
+       );
+     }
+
+     function register() {
+       auth.register(
+         self.registerData.name,
+         self.registerData.email,
+         self.registerData.password,
+         self.registerData.passwordConfirmation
+       ).then(
+         function(status) {
+           status ? success() : failure();
+         }, failure
+       );
+     }
+   }
+}());
+
+(function() {
+  'use strict';
+
+  angular.module('kset.guestlist.form', [
+    'kset.guestlist.auth.principal',
+    'ngResource'
+  ]).controller('FormController', FormCtrl);
+
+  FormCtrl.$inject = ['$resource', '$auth', '$http'];
+
+  function FormCtrl($resource, $auth, $http) {
     var self = this;
+    console.log('Forming!');
 
-    self.showRegister = false;
-    self.loginData = {};
-    self.registerData = {};
-    self.login = login;
-    self.register = register;
+    $http.defaults.headers.common['token'] = $auth.getToken();
+
+    var res = $resource('/api/guest/:id', {'id' : '@id'}, {
+      massSave : {
+        method : 'POST',
+        url : '/api/guests',
+        isArray : true
+      }
+    });
+
+    self.guest = {};
+    self.add = add;
     self.error = '';
+    var busy = false;
 
-    if(!document.toggleRegister) {
-      document.toggleRegister = function() {
-        $scope.$apply(function() {
-          self.showRegister = !self.showRegister;
-        });
+    function add() {
+      if(busy) {
+        return;
+      }
+
+      if(!!self.guest.fullName) {
+        busy = true;
+        //If it's a list of guests, save all of them
+        if(self.guest.fullName.indexOf(',') !== -1) {
+          res.massSave({
+            fullNames : self.guest.fullName,
+            referrer : self.guest.referrer || ''
+          }, afterSave, failedSave);
+        } else {
+          res.save(self.guest, afterSave, failedSave);
+        }
       }
     }
 
-    function success() {
-      $state.go('index');
+    function afterSave() {
+      self.error = '';
+      self.guest.fullName = '';
+      self.guest.referrer = '';
+      busy = false;
     }
 
-    function failure() {
-      self.error = 'Autorizacija nije uspjela';
-    }
-
-    function login() {
-      auth.login(self.loginData.email, self.loginData.password).then(
-        function(status) {
-          status ? success() : failure();
-        }, failure
-      );
-    }
-
-    function register() {
-      auth.register(
-        self.registerData.name,
-        self.registerData.email,
-        self.registerData.password,
-        self.registerData.passwordConfirmation
-      ).then(
-        function(status) {
-          status ? success() : failure();
-        }, failure
-      );
+    function failedSave() {
+      busy = false;
+      self.error = 'Unos nije uspio! Provjerite podatke!';
     }
   }
+
+}());
+
+(function() {
+  'use strict';
+
+  angular.module('kset.guestlist.list', [
+    'kset.guestlist.history',
+    'kset.guestlist.auth.principal',
+    'ngResource'
+  ]).controller('ListController', List);
+
+  List.$inject = ['$history', '$resource', '$auth', '$http'];
+
+  function List($history, $resource, $auth, $http) {
+    var self = this;
+
+    $http.defaults.headers.common['token'] = $auth.getToken();
+
+    var res = $resource('/api/guest/:id', {'id' : '@id'}, {
+      update : {
+        method : 'PUT'
+      }
+    });
+
+    self.admin = $auth.amAdmin();
+    self.guests = [];
+    // DO NOT show checked people by default
+    self.query = { checked : false };
+    self.toggleCheck = toggleCheck;
+    self.toggleFilter = toggleFilter;
+    self.remove = remove;
+
+    //Load the user list when the page opens
+    load();
+
+    function load() {
+      res.query(function(guests) {
+        self.guests = [];
+
+        //Transform the stupid ints into bools
+        angular.forEach(guests, function(guest) {
+            guest.checked = guest.checked === '1' ? true : false;
+            self.guests.push(guest);
+        });
+      });
+    }
+
+    function toggleFilter() {
+      self.query.checked = !self.query.checked;
+    }
+
+    function toggleCheck(guest, noUndo) {
+      guest.checked = !guest.checked;
+
+      res.update(guest, function() {
+        //If this isn't an undo, push an undo operation into the history stack
+        if(noUndo !== true) {
+          $history.push(function() {
+            toggleCheck(guest, true);
+          });
+        }
+
+        load();
+        self.query.fullName = '';
+        self.query.referrer = '';
+      });
+    }
+
+    function remove(id) {
+      res.delete({id : id}, load);
+    }
+  }
+
+}());
+
+(function() {
+  'use strict';
+
+  angular.module('kset.guestlist.navbar', [
+    'kset.guestlist.history',
+    'kset.guestlist.auth.principal',
+    'ui.router'
+  ]).controller('NavbarController', Navbar);
+
+  Navbar.$inject = ['$state', '$history', '$auth'];
+
+  function Navbar($state, $history, $auth) {
+    var self = this;
+
+    self.admin = $auth.amAdmin();
+    self.history = $history;
+    self.getActive = getActive;
+    self.logout = logout;
+
+    function getActive() {
+      return $state.current.name;
+    }
+
+    function logout() {
+      $auth.logout();
+      $state.go('auth');
+    }
+  }
+
 }());
 
 //# sourceMappingURL=all.js.map

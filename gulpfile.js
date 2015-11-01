@@ -13,6 +13,16 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     mix.sass('app.scss');
-    mix.scripts(['angular.js', 'angular-resource.js', 'ui-route.min.js', 'app.js']);
-    mix.browserSync();
+    mix.scripts([
+      'angular.js',
+      'angular-resource.js',
+      'ui-route.min.js',
+      'app.js',
+      'auth.factory.js',
+      'undo.factory.js',
+      'auth.controller.js',
+      'form.controller.js',
+      'list.controller.js',
+      'navbar.controller.js'
+    ]);
 });

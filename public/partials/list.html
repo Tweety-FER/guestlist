@@ -1,0 +1,55 @@
+<div class="list">
+  <!-- Search Bars [Name, Referrer] -->
+  <div class="well">
+    <form class="form-inline">
+      <div class="input-group">
+        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+        <input id="name" type="text" class="form-control input-sm" placeholder="Ime" ng-model="list.query.fullName" />
+      </div>
+      <div class="input-group">
+        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+        <input id="referrer" type="text" class="form-control input-sm" placeholder="Ciji je?" ng-model="list.query.referrer" />
+      </div>
+      <div class="checkbox">
+        <label>
+          <input id="inside" type="checkbox" ng-click="list.toggleFilter()" />
+          Usli?
+        </label>
+      </div>
+    </form>
+  </div>
+
+  <hr/>
+
+  <!-- List of users -->
+  <table class="table table-striped spaced">
+    <tr>
+      <th>
+        Ime
+      </th>
+      <th>
+        Ciji Je
+      </th>
+      <th>
+        {{ list.query.checked ? 'Potvrdi' : 'Ponisti' }}
+      </th>
+      <th ng-if="list.admin">
+        Obrisi
+      </th>
+    </tr>
+    <tr ng-repeat="guest in list.guests | filter:list.query | orderBy:'fullName'">
+      <td>
+        {{guest.fullName}}
+      </td>
+      <td>
+        {{guest.referrer}}
+      </td>
+      <td ng-click="list.toggleCheck(guest)">
+        <i class="fa" ng-class="list.query.checked ? 'fa-minus' : 'fa-plus'"></i>
+      </td>
+      <td ng-if="list.admin" ng-click="list.remove(guest.id)">
+        <i class="fa fa-remove"></i>
+      </td>
+    </tr>
+  </table>
+</div>
