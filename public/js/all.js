@@ -26747,7 +26747,7 @@ angular.module('ngResource', ['ng']).
 
   function Auth($http) {
       var token = fromStorage('kset-token'),
-          admin = fromStorage('kset-admin');
+          admin = fromStorage('kset-admin') || false;
 
       var auth = {
         getToken : function() { return token; },
