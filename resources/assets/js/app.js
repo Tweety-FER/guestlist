@@ -117,7 +117,7 @@
   SetupRoutes.$inject = ['$stateProvider', '$urlRouterProvider'];
 
   function SetupRoutes(state, url) {
-    url.otherwise('/index');
+    url.otherwise('/auth');
 
     state
     .state('index', {
@@ -134,9 +134,9 @@
     });
   }
 
-  IndexCtrl.$inject = ['$resource', 'auth', '$http'];
+  IndexCtrl.$inject = ['$resource', 'auth', '$http', '$state'];
 
-  function IndexCtrl($resource, auth, $http) {
+  function IndexCtrl($resource, auth, $http, $state) {
     var self = this;
 
     $http.defaults.headers.common['token'] = auth.getToken();
@@ -163,6 +163,7 @@
     self.toggleFilter = toggleFilter;
     self.add = add;
     self.delete = remove;
+    self.logout = logout;
 
     load();
 
@@ -178,6 +179,11 @@
 
     function activate(name) {
       self.active = name;
+    }
+
+    function logout() {
+      auth.logout();
+      $state.go('auth');
     }
 
     function add() {

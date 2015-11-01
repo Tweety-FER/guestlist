@@ -1,1 +1,10 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+@media (min-width: 768px){
+  .navbar-nav{
+      margin: 0 auto;
+      display: table;
+      table-layout: fixed;
+      float:none;
+  }
+}

@@ -5753,4 +5753,11 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+@media (min-width: 768px) {
+  .navbar-nav {
+    margin: 0 auto;
+    display: table;
+    table-layout: fixed;
+    float: none; } }
+
 /*# sourceMappingURL=app.css.map */

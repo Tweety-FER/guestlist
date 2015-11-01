@@ -26851,7 +26851,7 @@ angular.module('ngResource', ['ng']).
   SetupRoutes.$inject = ['$stateProvider', '$urlRouterProvider'];
 
   function SetupRoutes(state, url) {
-    url.otherwise('/index');
+    url.otherwise('/auth');
 
     state
     .state('index', {
@@ -26868,9 +26868,9 @@ angular.module('ngResource', ['ng']).
     });
   }
 
-  IndexCtrl.$inject = ['$resource', 'auth', '$http'];
+  IndexCtrl.$inject = ['$resource', 'auth', '$http', '$state'];
 
-  function IndexCtrl($resource, auth, $http) {
+  function IndexCtrl($resource, auth, $http, $state) {
     var self = this;
 
     $http.defaults.headers.common['token'] = auth.getToken();
@@ -26897,6 +26897,7 @@ angular.module('ngResource', ['ng']).
     self.toggleFilter = toggleFilter;
     self.add = add;
     self.delete = remove;
+    self.logout = logout;
 
     load();
 
@@ -26912,6 +26913,11 @@ angular.module('ngResource', ['ng']).
 
     function activate(name) {
       self.active = name;
+    }
+
+    function logout() {
+      auth.logout();
+      $state.go('auth');
     }
 
     function add() {

@@ -1,17 +1,3 @@
-<ul class="nav nav-tabs nav-justified" ng-if="!!index.admin">
-    <!-- Context-Switching Buttons -->
-    <li class="presentation"
-        ng-class="{'active' : index.active === 'list'}"
-        ng-click="index.activate('list')">
-      <a>Popis</a>
-    </li>
-    <li class="presentation"
-        ng-class="{'active' : index.active === 'form'}"
-        ng-click="index.activate('form')">
-      <a>Dodavanje</a>
-    </li>
-</ul>
-
 <div class="container">
   <div class="list" ng-if="index.active === 'list'">
     <!-- Search Bars [Name, Referrer] -->
@@ -46,7 +32,7 @@
           Ciji Je
         </th>
         <th>
-          Potvrdi
+          {{ index.query.checked === '0' ? 'Potvrdi' : 'Ponisti' }}
         </th>
         <th ng-if="index.admin">
           Obrisi
@@ -86,4 +72,30 @@
       <button class="btn btn-default" ng-click="index.add()">Dodaj</button>
     </form>
   </div>
+
+  <nav class="navbar navbar-fixed-bottom navbar-inverse">
+    <div class="container">
+      <ul class="nav navbar-nav">
+        <li ng-if="!!index.admin"
+            ng-class="{'active' : index.active === 'list'}"
+            ng-click="index.activate('list')">
+            <a>
+              <i class="glyphicon glyphicon-list"></i>
+            </a>
+        </li>
+        <li ng-if="!!index.admin"
+            ng-class="{'active' : index.active === 'form'}"
+            ng-click="index.activate('form')">
+            <a>
+              <i class="glyphicon glyphicon-pencil"></i>
+            </a>
+        </li>
+        <li ng-click="index.logout()">
+          <a>
+            <i class="glyphicon glyphicon-off"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 </div>
