@@ -26908,6 +26908,8 @@ angular.module('ngResource', ['ng']).
     self.delete = remove;
     self.logout = logout;
 
+    var busy = false;
+
     load();
 
     function load() {
@@ -26930,7 +26932,12 @@ angular.module('ngResource', ['ng']).
     }
 
     function add() {
+      if(busy) {
+        return;
+      }
+
       if(!!self.guest.fullName) {
+        busy = true;
         //If it's a list of guests, save all of them
         if(self.guest.fullName.indexOf(',') !== -1) {
           res.massSave({
@@ -26960,10 +26967,12 @@ angular.module('ngResource', ['ng']).
       self.error = '';
       self.guest.fullName = '';
       self.guest.referrer = '';
+      busy = false;
       load();
     }
 
     function failedSave() {
+      busy = false;
       self.error = 'Unos nije uspio! Provjerite podatke!';
     }
   }
