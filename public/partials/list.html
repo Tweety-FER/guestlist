@@ -31,7 +31,7 @@
         Ciji Je
       </th>
       <th>
-        {{ list.query.checked ? 'Potvrdi' : 'Ponisti' }}
+        {{ !list.query.checked ? 'Potvrdi' : 'Ponisti' }}
       </th>
       <th ng-if="list.admin">
         Obrisi
