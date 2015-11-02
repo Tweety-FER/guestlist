@@ -4,12 +4,13 @@
   angular.module('kset.guestlist.list', [
     'kset.guestlist.history',
     'kset.guestlist.auth.principal',
+    'kset.guestlist.modal',
     'ngResource'
   ]).controller('ListController', List);
 
-  List.$inject = ['$history', '$resource', '$auth', '$http'];
+  List.$inject = ['$history', '$resource', '$auth', '$http', '$confirm'];
 
-  function List($history, $resource, $auth, $http) {
+  function List($history, $resource, $auth, $http, $confirm) {
     var self = this;
 
     $http.defaults.headers.common['token'] = $auth.getToken();
@@ -48,13 +49,22 @@
     }
 
     function toggleCheck(guest, noUndo) {
+      var action = guest.checked ? 'Checkoutaj' : 'Checkinaj';
+
+      //Require a confirmation
+      $confirm(function() {
+        performCheckToggle(guest, noUndo)
+      }, action + ' osobu ' + guest.fullName + '?');
+    }
+
+    function performCheckToggle(guest, noUndo) {
       guest.checked = !guest.checked;
 
       res.update(guest, function() {
         //If this isn't an undo, push an undo operation into the history stack
         if(noUndo !== true) {
           $history.push(function() {
-            toggleCheck(guest, true);
+            performCheckToggle(guest, true);
           });
         }
 
@@ -64,8 +74,10 @@
       });
     }
 
-    function remove(id) {
-      res.delete({id : id}, load);
+    function remove(guest) {
+      $confirm(function() {
+        res.delete({id : guest.id}, load);
+      }, 'Makni osobu ' + guest.fullName + ' s popisa?');
     }
   }
 

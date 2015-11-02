@@ -17,12 +17,15 @@ elixir(function(mix) {
       'angular.js',
       'angular-resource.js',
       'ui-route.min.js',
+      'ui-bootstrap-tpls-0.14.3.min.js',
       'app.js',
       'auth.factory.js',
       'undo.factory.js',
       'auth.controller.js',
       'form.controller.js',
       'list.controller.js',
-      'navbar.controller.js'
+      'navbar.controller.js',
+      'modal.controller.js',
+      'modal.factory.js'
     ]);
 });
