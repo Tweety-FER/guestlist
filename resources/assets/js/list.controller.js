@@ -75,6 +75,7 @@
     }
 
     function remove(guest) {
+      console.log('DEBUG', guest);
       $confirm(function() {
         res.delete({id : guest.id}, load);
       }, 'Makni osobu ' + guest.fullName + ' s popisa?');
