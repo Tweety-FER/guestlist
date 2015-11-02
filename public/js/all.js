@@ -27141,6 +27141,7 @@ return a>v||p>a&&u>a},a.noDecrementHours=function(){var a=n(p,60*-s);return u>a|
     }
 
     function remove(guest) {
+      console.log('DEBUG', guest);
       $confirm(function() {
         res.delete({id : guest.id}, load);
       }, 'Makni osobu ' + guest.fullName + ' s popisa?');
