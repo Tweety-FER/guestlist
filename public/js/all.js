@@ -27104,7 +27104,9 @@ return a>v||p>a&&u>a},a.noDecrementHours=function(){var a=n(p,60*-s);return u>a|
 
         //Transform the stupid ints into bools
         angular.forEach(guests, function(guest) {
-            guest.checked = guest.checked === '1' ? true : false;
+            guest.checked = (guest.checked === true || guest.checked === '1')
+                          ? true
+                          : false;
             self.guests.push(guest);
         });
       });

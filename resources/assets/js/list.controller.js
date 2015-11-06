@@ -38,7 +38,9 @@
 
         //Transform the stupid ints into bools
         angular.forEach(guests, function(guest) {
-            guest.checked = guest.checked === '1' ? true : false;
+            guest.checked = (guest.checked === true || guest.checked === '1')
+                          ? true
+                          : false;
             self.guests.push(guest);
         });
       });
