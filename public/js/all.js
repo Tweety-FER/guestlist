@@ -26951,25 +26951,15 @@ return a>v||p>a&&u>a},a.noDecrementHours=function(){var a=n(p,60*-s);return u>a|
   angular.module('kset.guestlist.auth', [])
          .controller('AuthController', Auth);
 
-   Auth.$inject = ['$auth', '$state', '$scope'];
+   Auth.$inject = ['$auth', '$state'];
 
-   function Auth(auth, $state, $scope) {
+   function Auth(auth, $state) {
      var self = this;
 
-     self.showRegister = false;
      self.loginData = {};
      self.registerData = {};
      self.login = login;
-     self.register = register;
      self.error = '';
-
-     if(!document.toggleRegister) {
-       document.toggleRegister = function() {
-         $scope.$apply(function() {
-           self.showRegister = !self.showRegister;
-         });
-       }
-     }
 
      function success() {
        $state.go('index.list');
@@ -26981,19 +26971,6 @@ return a>v||p>a&&u>a},a.noDecrementHours=function(){var a=n(p,60*-s);return u>a|
 
      function login() {
        auth.login(self.loginData.email, self.loginData.password).then(
-         function(status) {
-           status ? success() : failure();
-         }, failure
-       );
-     }
-
-     function register() {
-       auth.register(
-         self.registerData.name,
-         self.registerData.email,
-         self.registerData.password,
-         self.registerData.passwordConfirmation
-       ).then(
          function(status) {
            status ? success() : failure();
          }, failure
