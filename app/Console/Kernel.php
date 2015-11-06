@@ -14,6 +14,10 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         \App\Console\Commands\Inspire::class,
+        \App\Console\Commands\ListUsers::class,
+        \App\Console\Commands\CreateUser::class,
+        \App\Console\Commands\Adminify::class,
+        \App\Console\Commands\Deadminify::class,
     ];
 
     /**
